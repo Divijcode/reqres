@@ -30,13 +30,22 @@ class _UsersListState extends State<UsersList> {
   }
 
   String getname(int index){
-    return data['data'][index]['first_name'] + data['data'][index]['last_name'] ;
+    if(data!=null){
+      return data['data'][index]['first_name'] + data['data'][index]['last_name'] ;
+    }
+
   }
   String getemail(int index){
-    return data['data'][index]['email'] ;
+    if(data!=null){
+      return data['data'][index]['email'] ;
+    }
+
   }
   String getimage(int index){
-    return data['data'][index]['avatar'];
+    if(data!=null){
+      return data['data'][index]['avatar'];
+    }
+
   }
 
 
@@ -59,24 +68,36 @@ class _UsersListState extends State<UsersList> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Container(
-              child: ListView.builder(
-                itemCount: 6,
-                  itemBuilder: (context,index){
-                    return Card(
-                      child: ListTile(
-                        leading: CircleAvatar(backgroundColor:Colors.transparent,child: Image.network(getimage(index))),
-                        title: Text(
-                        getname(index),
-                        ),
-                        subtitle: Text(
-                          getemail(index),
-                        ),
-                      ),
-                    );
-                  },
 
+        child: FutureBuilder(
+    builder: (context, projectSnap) {
+      if (data == null) {
+        return Container(
+          child: Center(child: CircularProgressIndicator()),
+        );
+      }
+
+      return Container(
+        child: ListView.builder(
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            return Card(
+              child: ListTile(
+                leading: CircleAvatar(backgroundColor: Colors.transparent,
+                    child: Image.network(getimage(index))),
+                title: Text(
+                  getname(index),
+                ),
+                subtitle: Text(
+                  getemail(index),
+                ),
               ),
+            );
+          },
+
+        ),
+      );
+    }
         ),
       ),
     );
