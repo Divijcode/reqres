@@ -10,16 +10,20 @@ class UsersList extends StatefulWidget {
 }
 
 class _UsersListState extends State<UsersList> {
-  var data;
+  var data=null;
   String fname,lname,email,name;
 
 
   Future<void> getUsersList () async {
     try {
+
       http.Response response = await http.get(
           'https://reqres.in/api/users?page=2');
-      data = response.body;
-      data = jsonDecode(data);
+      setState(() {
+        data = response.body;
+        data = jsonDecode(data);
+      });
+
     }catch(e){
       print(e);
     }
@@ -38,7 +42,7 @@ class _UsersListState extends State<UsersList> {
 
   @override
   void initState() {
-
+    getUsersList();
     // TODO: implement initState
     super.initState();
 
